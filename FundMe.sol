@@ -9,13 +9,19 @@ pragma solidity ^0.8.8;
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 contract FundMe {
-    uint256 minimumUsd = 50;
+    uint256 minimumUsd = 50 * 1e18;
+
+    // create an array of funder addresses
+    address[] public funders;
+    mapping(address => uint256) public addressToAmountFunded;
 
     function fund() public payable {
         // msg is a global variable
         // Must be greater than 1 ETH
         // 18 decimals
-        require(msg.value > 1e18, "Not enough bro");
+        require(getConversionRate(msg.value) >= minimumUsd, "Not enough bro");
+        funders.push(msg.sender);
+        addressToAmountFunded[msg.sender] = msg.value;
     }
 
     function getPrice() public view returns(uint256) {
