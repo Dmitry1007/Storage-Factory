@@ -31,6 +31,10 @@ contract FundMe {
             addressToAmountFunded[funder] = 0;
         }
         // reset funders array
-        // withdraw funds
+        funders = new address[](0);
+
+        // call, mucho powerful, can call any contract within Ethereum
+        (bool callSuccess, ) = payable(msg.sender).call{value: address(this).balance}("");
+        require(callSuccess, "Call Failed");
     }
 }
