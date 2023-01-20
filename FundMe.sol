@@ -23,4 +23,14 @@ contract FundMe {
         funders.push(msg.sender);
         addressToAmountFunded[msg.sender] = msg.value;
     }
+
+    function withdraw() public {
+        // starting index, ending index, step amount
+        for (uint256 funderIndex = 0; funderIndex < funders.length; funderIndex++) {
+            address funder = funders[funderIndex];
+            addressToAmountFunded[funder] = 0;
+        }
+        // reset funders array
+        // withdraw funds
+    }
 }
