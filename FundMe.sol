@@ -10,23 +10,22 @@ import "./PriceConverter.sol";
 contract FundMe {
     using PriceConverter for uint256;
 
-    uint256 minimumUsd = 50 * 1e18;
-
+    uint256 constant MINIMUM_USD = 50 * 1e18;
     address[] public funders;
     mapping(address => uint256) public addressToAmountFunded;
-    address public owner;
+    address public immutable i_owner;
 
     // called immediately after deployment of this contract
     constructor() {
         // owner is whomever deploys this contract
-        owner = msg.sender;
+        i_owner = msg.sender;
     }
 
     function fund() public payable {
         // msg is a global variable
         // Must be greater than 1 ETH
         // 18 decimals
-        require(msg.value.getConversionRate() >= minimumUsd, "Not enough bro");
+        require(msg.value.getConversionRate() >= MINIMUM_USD, "Not enough bro");
         funders.push(msg.sender);
         addressToAmountFunded[msg.sender] = msg.value;
     }
@@ -47,7 +46,7 @@ contract FundMe {
     }
     
     modifier onlyOwner {
-        require(msg.sender == owner, "Sender is not owner");
+        require(msg.sender == i_owner, "Sender is not owner");
         _; // run the rest of the code, once the above statement comes back true
     }
 }
