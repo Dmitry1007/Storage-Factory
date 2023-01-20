@@ -14,6 +14,13 @@ contract FundMe {
 
     address[] public funders;
     mapping(address => uint256) public addressToAmountFunded;
+    address public owner;
+
+    // called immediately after deployment of this contract
+    constructor() {
+        // owner is whomever deploys this contract
+        owner = msg.sender;
+    }
 
     function fund() public payable {
         // msg is a global variable
@@ -25,6 +32,7 @@ contract FundMe {
     }
 
     function withdraw() public {
+        require(msg.sender == owner, "Sender is not owner");
         // starting index, ending index, step amount
         for (uint256 funderIndex = 0; funderIndex < funders.length; funderIndex++) {
             address funder = funders[funderIndex];
@@ -37,4 +45,5 @@ contract FundMe {
         (bool callSuccess, ) = payable(msg.sender).call{value: address(this).balance}("");
         require(callSuccess, "Call Failed");
     }
+    // Only the owner of this contract should be able to call the withdraw function
 }
