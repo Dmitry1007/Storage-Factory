@@ -14,6 +14,12 @@ async function main() {
   console.log("Deploying, please wait...");
   const contract = await contractFactory.deploy();
   contract.log(contract);
+  // you get receipt when you wait for one block confirmation
+  const transactionReceipt = await contract.deployTransaction.wait(1);
+  console.log("Here is the deployment transaction (tx response): ");
+  console.log(contract.deploymentTransaction);
+  console.log("Here is the transaction receipt: ");
+  console.log(transactionReceipt);
 }
 
 main()
