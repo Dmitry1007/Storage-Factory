@@ -11,7 +11,6 @@ contract SimpleStorage {
 
     // A mapping is a data struct where a key is mapped to a single value
     mapping(string => uint256) public nameToFavoriteNumber;
-    
 
     // Dynamic array, size isn't given upon initialization
     // People[3] means max 3 people
@@ -32,7 +31,7 @@ contract SimpleStorage {
     // view and pure funtions, when called alone, don't spend gas UNLESS called from inside a func that costs gas
     // view and pure functions disallow modification of state
     // pure functions additionally disallow you to read from blockchain state
-    function retrieve() public view returns(uint256) {
+    function retrieve() public view returns (uint256) {
         return favoriteNumber;
     }
 
